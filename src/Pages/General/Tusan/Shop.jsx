@@ -1,6 +1,6 @@
 import React from 'react';
-import TextLogo from '../../assets/images/Logo_Text.png';
-import FullProduct from '../Tusan/FullProduct';
+import TextLogo from '../../../assets/images/Logo_Text.png';
+import FullProduct from '../../General/Tusan/FullProduct';
 
 const Shop = () => {
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import BigLogo from '../../assets/images/Logo.png';
-import TextLogo from '../../assets/images/Logo_Text.png';
-import FullProduct from './FullProduct';
+import BigLogo from '../../../assets/images/Logo.png';
+import TextLogo from '../../../assets/images/Logo_Text';
+import FullProduct from '../../General/Tusan/FullProduct';
 
 const Home = () => {
   return (

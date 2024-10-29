@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TextLogo from "../../assets/images/Logo_Text.png";
-import FullProduct from "../Tusan/FullProduct";
+import TextLogo from "../../../assets/images/Logo_Text.png";
+import FullProduct from "../../General/Tusan/FullProduct";
 
 const CartPage = () => {
   const initialQuantities = [1, 1]; // Initial quantity for each product
