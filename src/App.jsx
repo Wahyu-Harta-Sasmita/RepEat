@@ -1,9 +1,9 @@
 import React from 'react'
-
+import T from './Pages/General/Tusan/t'
 const App = () => {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <T />
     </>
   )
 }
