@@ -18,9 +18,9 @@ function DonationPage() {
         <nav className="flex items-center space-x-4">
           <a href="#forum" className="font-semibold">Forum</a>
           <a href="#products" className="font-semibold">Products</a>
-          <button className="text-black"><i className="fas fa-heart"></i></button>
-          <button className="text-black"><i className="fas fa-shopping-cart"></i></button>
-          <button className="text-black"><i className="fas fa-bell"></i></button>
+          <button className="text-white">❤</button>
+          <button className="text-white">🛒</button>
+          <button className="text-white">🔔</button>
           <div className="bg-gray-400 rounded-full w-8 h-8 flex items-center justify-center text-sm">PP</div>
         </nav>
       </header>
