@@ -1,6 +1,6 @@
 import React from 'react';
 import BigLogo from '../../../assets/images/Logo.png';
-import TextLogo from '../../../assets/images/Logo_Text';
+import TextLogo from '../../../assets/images/Logo_Text.png';
 import FullProduct from '../../General/Tusan/FullProduct';
 
 const Home = () => {
