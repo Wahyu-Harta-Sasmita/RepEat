@@ -1,24 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BigLogo from '../../../assets/images/Logo.png';
 import TextLogo from '../../../assets/images/Logo_Text.png';
-import FullProduct from '../../General/Tusan/FullProduct';
 
 const Home = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      fetch(`https://api.example.com/search?query=${searchQuery}`)
+        .then(response => response.json())
+        .then(data => setSuggestions(data))
+        .catch(error => console.error('Error fetching search data:', error));
+    }
+  }, [searchQuery]);
+
   return (
     <div className="min-h-screen bg-white">
       <header className="bg-green-500 text-white w-full">
         <div className="flex justify-between items-center p-4 w-full">
           <div className="flex items-center flex-shrink-0">
-            <img src={TextLogo} alt="" className="w-32 h-auto mr-6 bg-white p-1 rounded-md" />
+            <img src={TextLogo} alt="Text Logo" className="w-32 h-auto mr-6 bg-white p-1 rounded-md" />
           </div>
           <div className="flex items-center space-x-4 flex-grow">
             <input
               type="text"
               placeholder="search food / store"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="px-4 py-2 rounded-full flex-grow bg-gray-100 text-black placeholder-gray-500 outline-none"
             />
             <a href="#" className="font-bold text-black">Forum</a>
-            <a href={F} className="font-bold text-black">Products</a>
+            <a href="#" className="font-bold text-black">Products</a>
             <button className="text-white">❤️</button>
             <button className="text-white">🛒</button>
             <button className="text-white">🔔</button>
@@ -30,7 +43,7 @@ const Home = () => {
       <main className="flex justify-center items-center mt-16 max-w-screen-lg mx-auto">
         <div className="flex flex-grow items-center justify-between">
           <div className="flex-shrink-0 mr-4 flex items-center">
-            <img src={BigLogo} alt="" className="max-h-80" />
+            <img src={BigLogo} alt="Big Logo" className="max-h-80" />
           </div>
 
           <div className="flex flex-col items-center">
@@ -56,6 +69,16 @@ const Home = () => {
           </div>
         </div>
       </main>
+
+      <div className="p-4">
+        {suggestions.length > 0 && (
+          <ul>
+            {suggestions.map((suggestion, index) => (
+              <li key={index}>{suggestion.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

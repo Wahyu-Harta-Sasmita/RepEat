@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextLogo from "../../../assets/images/Logo_Text.png";
-import FullProduct from "../../General/Tusan/FullProduct";
 
-const CartPage = () => {
-  const initialQuantities = [1, 1]; // Initial quantity for each product
+const CartPageBesar = () => {
+  const initialQuantities = [1, 1];
   const [quantities, setQuantities] = useState(initialQuantities);
   const [checkedItems, setCheckedItems] = useState([false, false]); // Initial checked state for each product
+  const [prices, setPrices] = useState([]); // State to store product prices
+
+  useEffect(() => {
+    // Fetch prices from API when component mounts
+    fetch('https://api.example.com/products/prices') // Ganti dengan endpoint API yang sesuai
+      .then(response => response.json())
+      .then(data => {
+        // Misalnya, data dikembalikan sebagai array harga
+        setPrices(data.prices); // Sesuaikan sesuai struktur data yang diterima
+      })
+      .catch(error => {
+        console.error('Error fetching product prices:', error);
+      });
+  }, []);
 
   const incrementQuantity = (index) => {
     setQuantities(quantities.map((qty, i) => (i === index ? qty + 1 : qty)));
@@ -28,14 +41,57 @@ const CartPage = () => {
 
   // Calculate total based on checked items
   const totalQuantity = quantities.reduce((acc, qty, index) => acc + (checkedItems[index] ? qty : 0), 0);
-  const totalPrice = totalQuantity * 100000;
+  const totalPrice = quantities.reduce((acc, qty, index) => {
+    return acc + (checkedItems[index] ? qty * (prices[index] || 0) : 0);
+  }, 0);
+
+  const handleBuyNow = () => {
+    const itemsToBuy = quantities.map((qty, index) => ({
+      productId: index + 1, // Ganti dengan ID produk yang sebenarnya
+      quantity: checkedItems[index] ? qty : 0,
+    })).filter(item => item.quantity > 0);
+
+    fetch('https://api.example.com/cart/buy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(itemsToBuy),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Purchase successful:', data);
+      })
+      .catch(error => {
+        console.error('Error purchasing items:', error);
+      });
+  };
+
+  const handleRemoveItems = () => {
+    const remainingQuantities = quantities.filter((_, index) => !checkedItems[index]);
+
+    fetch('https://api.example.com/cart/remove', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(remainingQuantities),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Items removed:', data);
+      })
+      .catch(error => {
+        console.error('Error removing items:', error);
+      });
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-green-500 text-white w-full">
         <div className="flex justify-between items-center p-4 w-full">
           <div className="flex items-center flex-shrink-0">
-            <img src={TextLogo} alt="Logo" className="w-32 h-auto mr-6 bg-white p-1 rounded-md" />
+            <img src={TextLogo} alt="TextLogo" className="w-32 h-auto mr-6 bg-white p-1 rounded-md" />
           </div>
           <div className="flex items-center space-x-4 flex-grow">
             <input
@@ -44,7 +100,7 @@ const CartPage = () => {
               className="px-4 py-2 rounded-full flex-grow bg-gray-100 text-black placeholder-gray-500 outline-none"
             />
             <a href="#" className="font-bold text-black">Forum</a>
-            <a href={FullProduct} className="font-bold text-black">Products</a>
+            <a href="#products" className="font-bold text-black">Products</a>
             <button className="text-white">❤️</button>
             <button className="text-white">🛒</button>
             <button className="text-white">🔔</button>
@@ -75,7 +131,7 @@ const CartPage = () => {
               <button onClick={() => decrementQuantity(index)} className="text-xl px-2 bg-gray-200">-</button>
               <span className="px-2 bg-green-500 text-white rounded-md">{quantities[index]}</span>
               <button onClick={() => incrementQuantity(index)} className="text-xl px-2 bg-gray-200">+</button>
-              <button className="text-red-500">🗑️</button>
+              <button className="text-red-500" onClick={() => handleRemoveItems()}>🗑️</button>
             </div>
           </div>
         ))}
@@ -87,12 +143,12 @@ const CartPage = () => {
           Harga: Rp {formatCurrency(totalPrice)}
         </span>
         <div className="flex space-x-2">
-          <button className="bg-red-500 text-white px-4 py-2 rounded-md">🗑️</button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-md">Buy Now</button>
+          <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={handleRemoveItems}>🗑️</button>
+          <button className="bg-green-500 text-white px-4 py-2 rounded-md" onClick={handleBuyNow}>Buy Now</button>
         </div>
       </footer>
     </div>
   );
 };
 
-export default CartPage;
+export default CartPageBesar;
