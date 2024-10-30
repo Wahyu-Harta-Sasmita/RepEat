@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import TextLogo from '../../../assets/images/Logo_Text.png';
-import FullProduct from '../../General/Tusan/FullProduct';
+import { Link } from 'react-router-dom';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
 
-    // Memuat data produk dari API
     useEffect(() => {
-        fetch('https://api.example.com/products')  // Ganti dengan URL API yang sesuai
+        fetch('https://api.trplweb.wefgis-sync.com/api/foods')
             .then(response => response.json())
-            .then(data => setProducts(data))
+            .then(data => setProducts(data.data))
             .catch(error => console.error('Error fetching products:', error));
     }, []);
 
@@ -26,8 +25,8 @@ const Shop = () => {
                             placeholder="search food / store"
                             className="px-4 py-2 rounded-full flex-grow bg-gray-100 text-black placeholder-gray-500 outline-none"
                         />
-                        <a href="#" className="font-bold text-black">Forum</a>
-                        <a href={FullProduct} className="font-bold text-black">Products</a>
+                        <Link to="/forum" className="font-bold text-black">Forum</Link>
+                        <Link to="/products" className="font-bold text-black">Products</Link>
                         <button className="text-white">❤️</button>
                         <button className="text-white">🛒</button>
                         <button className="text-white">🔔</button>
@@ -37,44 +36,44 @@ const Shop = () => {
             </header>
 
             <nav className="flex justify-center space-x-6 my-2 px-4 text-black text-lg">
-                <a href="#" className="underline">All</a>
-                <a href="#">Fast Food</a>
-                <a href="#">Healthy Food</a>
-                <a href="#">Vegetarian</a>
-                <a href="#">Fast Drink</a>
-                <a href="#">Juice</a>
+                <Link to="#" className="underline">All</Link>
+                <Link to="#">Fast Food</Link>
+                <Link to="#">Healthy Food</Link>
+                <Link to="#">Vegetarian</Link>
+                <Link to="#">Fast Drink</Link>
+                <Link to="#">Juice</Link>
             </nav>
 
             <div className="flex-grow flex items-center justify-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-8">
                     {products.map((product) => (
-                        <div key={product.id} className="bg-gray-200 p-8 rounded-lg shadow-lg flex flex-col w-72">
+                        <div key={product.id} className="bg-gray-200 p-8 rounded-lg shadow-lg flex flex-col w-72 m-4"> {/* Tambahkan kelas m-4 di sini */}
                             <div className="bg-gray-400 h-56 flex items-center justify-center text-white font-bold rounded-lg">
-                                {product.image ? <img src={product.image} alt={product.name} className="h-full w-full object-cover rounded-lg" /> : "Photo Products"}
+                                {product.image ? (
+                                    <img src={product.foto_makanan} alt={product.nama_makanan} className="h-full w-full object-cover rounded-lg" />
+                                ) : (
+                                    "Photo Products"
+                                )}
                             </div>
                             <div className="mt-4 flex flex-col">
-                                <h3 className="font-bold text-lg">{product.name}</h3>
+                                <Link to={`/product/${product.id}`} className="font-bold text-lg text-black hover:underline">
+                                    {product.nama_makanan}
+                                </Link>
                                 <div className="flex justify-between items-center mt-2 space-x-2">
-                                    {product.originalPrice && (
-                                        <span className="text-gray-400 line-through">Rp.{product.originalPrice}</span>
-                                    )}
-                                    <span className="font-bold text-green-500">Rp.{product.discountedPrice}</span>
+                                    <span className="font-bold text-green-500">Rp.{product.price}</span>
                                 </div>
                                 <button className="text-gray-500 hover:text-red-500 mt-2">
                                     <i className="fas fa-heart"></i>
                                 </button>
                             </div>
                             <p className='font-semibold'>Description</p>
-                            <p className="text-sm mt-2 text-gray-600">{product.description}</p>
-                            <div className="mt-4 flex space-x-3">
-                                <button className="bg-green-500 text-black font-bold py-1 px-2 rounded-full hover:bg-green-600 flex-1">Add to Cart</button>
-                                <button className="bg-green-500 text-black font-bold py-1 px-2 rounded-full hover:bg-green-600 flex-1">Buy Now</button>
-                            </div>
+                            <Link to={`/product/${product.id}`} className="text-sm mt-2 text-gray-600 hover:underline">
+                                {product.desc}
+                            </Link>
                         </div>
                     ))}
                 </div>
             </div>
-
         </div>
     );
 }

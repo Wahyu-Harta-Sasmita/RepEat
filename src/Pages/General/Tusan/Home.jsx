@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BigLogo from '../../../assets/images/Logo.png';
 import TextLogo from '../../../assets/images/Logo_Text.png';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,8 +31,8 @@ const Home = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="px-4 py-2 rounded-full flex-grow bg-gray-100 text-black placeholder-gray-500 outline-none"
             />
-            <a href="#" className="font-bold text-black">Forum</a>
-            <a href="#" className="font-bold text-black">Products</a>
+            <Link to="" className="font-bold text-black">Forum</Link>
+            <Link to="/shop" className="font-bold text-black">Products</Link>
             <button className="text-white">❤️</button>
             <button className="text-white">🛒</button>
             <button className="text-white">🔔</button>
@@ -58,9 +59,11 @@ const Home = () => {
             <div className="flex flex-col items-center mb-6">
               <h2 className="font-bold text-2xl mb-2">LET'S DONATE</h2>
               <div className="flex space-x-4">
-                <button className="bg-green-500 text-black font-bold py-2 px-8 rounded-full hover:bg-green-600 w-30 h-12">
-                  PRODUCTS
-                </button>
+                <Link>
+                  <button className="bg-green-500 text-black font-bold py-2 px-8 rounded-full hover:bg-green-600 w-30 h-12">
+                    PRODUCTS
+                  </button>
+                </Link>
                 <button className="bg-green-500 text-black font-bold py-2 px-8 rounded-full hover:bg-green-600 w-36 h-12">
                   MONEY
                 </button>
