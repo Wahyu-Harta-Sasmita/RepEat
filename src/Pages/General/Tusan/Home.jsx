@@ -17,8 +17,6 @@ const Home = () => {
             <input
               type="text"
               placeholder="search food / store"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
               className="px-4 py-2 rounded-full flex-grow bg-gray-100 text-black placeholder-gray-500 outline-none"
             />
             <Link to="" className="font-bold text-black">Forum</Link>

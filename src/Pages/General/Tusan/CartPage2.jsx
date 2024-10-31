@@ -9,7 +9,7 @@ const CartPage2 = () => {
 
   const fetchProductData = async () => {
     try {
-      const response = await fetch(`https://api.trplweb.wefgis-sync.com/api/foods/${id}`);
+      const response = await fetch(`https://api.trplweb.wefgis-sync.com/api/foods/3`);
       const data = await response.json();
       setProduct(Array.isArray(data) ? data[0] : data);
       console.log('Fetched product data:', data);
