@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-function Sidebar() {
+const Sidebar = () => {
   const location = useLocation();
 
   return (

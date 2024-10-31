@@ -8,7 +8,7 @@ const orders = [
   { product: 'iPhone X', buyer: 'Josh Adam', total: 'Rp 100,000', status: 'Terkirim' },
 ];
 
-function OrdersTable() {
+const OrdersTable = () => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <h3 className="text-gray-500 mb-4">Pesanan Terakhir</h3>

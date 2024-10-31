@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Header() {
+const Header = () => {
   return (
     <div className="flex justify-between items-center">
       <h1 className="text-2xl font-bold">Selamat Datang Kembali, Admin</h1>
