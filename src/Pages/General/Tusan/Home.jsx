@@ -4,17 +4,7 @@ import TextLogo from '../../../assets/images/Logo_Text.png';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-
-  useEffect(() => {
-    if (searchQuery) {
-      fetch(`https://api.example.com/search?query=${searchQuery}`)
-        .then(response => response.json())
-        .then(data => setSuggestions(data))
-        .catch(error => console.error('Error fetching search data:', error));
-    }
-  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-white">
