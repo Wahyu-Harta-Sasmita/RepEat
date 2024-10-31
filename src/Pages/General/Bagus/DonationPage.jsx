@@ -61,7 +61,6 @@ function DonationPage() {
         ))}
       </div>
 
-      {/* Floating Button */}
       <button className="fixed bottom-6 right-6 bg-white border-2 border-black rounded-full p-3 shadow-lg">
         <i className="fas fa-plus text-2xl"></i>
       </button>
