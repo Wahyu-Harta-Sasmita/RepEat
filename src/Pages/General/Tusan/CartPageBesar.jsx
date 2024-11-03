@@ -1,23 +1,40 @@
 import React, { useState, useEffect } from "react";
-import TextLogo from "../../../assets/images/Logo_Text.png";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getFoods } from "../../../Components/Controller/getFoods";
+import Header from "../../../Components/Tusan/Header";
+import ProductDetails2 from "../../../Components/Tusan/ProductDetails2";
+import CartItem from "../../../Components/Tusan/CartItem";
+import CartFooter from "../../../Components/Tusan/CartFooter";
 
 const CartPageBesar = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    // Load cartItems from localStorage if it exists
+    return JSON.parse(localStorage.getItem("cartItems")) || [];
+  });
+
+  useEffect(() => {
+    fetchProductData();
+    fetchFoods();
+  }, []);
+
+  useEffect(() => {
+    // Update localStorage whenever cartItems changes
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const fetchProductData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`https://api.trplweb.wefgis-sync.com/api/foods/3`);
+      const response = await fetch(`https://api.trplweb.wefgis-sync.com/api/foods/${id}`);
       if (!response.ok) throw new Error("Failed to fetch product");
       const data = await response.json();
       setProduct(data);
@@ -38,11 +55,6 @@ const CartPageBesar = () => {
     });
   };
 
-  useEffect(() => {
-    fetchProductData();
-    fetchFoods();
-  }, []);
-
   const incrementQuantity = () => setQuantity((prev) => prev + 1);
   const decrementQuantity = () => {
     if (quantity > 1) setQuantity((prev) => prev - 1);
@@ -51,75 +63,76 @@ const CartPageBesar = () => {
   const handleCheck = () => setChecked((prev) => !prev);
 
   const handleDelete = (idToDelete) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== idToDelete));
+    const itemToDelete = cartItems.find((item) => item.id === idToDelete);
+    if (itemToDelete) {
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        stok: prevProduct.stok + itemToDelete.quantity,
+      }));
+      setCartItems((prev) => prev.filter((item) => item.id !== idToDelete));
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (product && quantity <= product.stok) {
+      const existingItemIndex = cartItems.findIndex((item) => item.id === product.id);
+      const quantityToAdd = checked ? quantity : 1;
+
+      if (existingItemIndex > -1) {
+        const updatedCartItems = [...cartItems];
+        updatedCartItems[existingItemIndex].quantity += quantityToAdd;
+        setCartItems(updatedCartItems);
+      } else {
+        const newItem = {
+          id: product.id,
+          nama_makanan: product.nama_makanan,
+          price: product.price,
+          quantity: quantityToAdd,
+          foto_makanan: product.foto_makanan,
+        };
+        setCartItems((prev) => [...prev, newItem]);
+      }
+
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        stok: prevProduct.stok - quantityToAdd,
+      }));
+      setQuantity(1);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-green-500 text-white w-full">
-        <div className="flex justify-between items-center p-4 w-full">
-          <Link to="/">
-            <img src={TextLogo} alt="TextLogo" className="w-32 h-auto mr-6 bg-white p-1 rounded-md" />
-          </Link>
-          <div className="flex items-center space-x-4 flex-grow">
-            <input
-              type="text"
-              placeholder="search food / store"
-              className="px-4 py-2 rounded-full flex-grow bg-gray-100 text-black placeholder-gray-500 outline-none"
-            />
-            <Link to="/forum" className="font-bold text-black">Forum</Link>
-            <Link to="/products" className="font-bold text-black">Products</Link>
-            <button className="text-white">❤️</button>
-            <button className="text-white">🛒</button>
-            <button className="text-white">🔔</button>
-            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-700">PP</div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className="p-4">
         {loading ? (
           <div>Loading product...</div>
         ) : error ? (
           <div className="text-red-500">{error}</div>
-        ) : product ? (
-          <div className="flex items-center p-4 bg-gray-300 rounded-md mb-4">
-            <input type="checkbox" className="mr-4" checked={checked} onChange={handleCheck} />
-            <img className="w-16 h-16 mr-4 object-cover" src={product.foto_makanan} alt={product.nama_makanan} />
-            <div className="flex-1">
-              <div className="text-lg font-semibold">{product.nama_makanan}</div>
-              <div className="flex items-center space-x-2">
-                <span>stok: {product.stok}</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button onClick={decrementQuantity} className="text-xl px-2 bg-gray-200">-</button>
-              <span className="px-2 bg-green-500 text-white rounded-md">{quantity}</span>
-              <button onClick={incrementQuantity} className="text-xl px-2 bg-gray-200">+</button>
-            </div> 
-          </div>
         ) : (
-          <div>No product found.</div>
+          <ProductDetails2
+            product={product}
+            quantity={quantity}
+            increment={incrementQuantity}
+            decrement={decrementQuantity}
+            checked={checked}
+            onCheck={handleCheck}
+          />
         )}
       </div>
 
-      <footer className="p-4 bg-gray-300 flex justify-between items-center">
-        <span className="text-lg font-semibold">Jumlah: {checked ? quantity : 0}</span>
-        <div className="flex space-x-2">
-          <button className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={() => handleDelete(product?.id)}>🗑️</button>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-md">Buy Now</button>
-        </div>
-      </footer>
+      <CartFooter
+        quantity={checked ? quantity : 0}
+        onDelete={() => handleDelete(product?.id)}
+        onAddToCart={handleAddToCart}
+        onSave={() => navigate('/shop')}
+      />
 
       <div className="p-4">
-        <h2 className="text-xl font-semibold">Items in Cart:</h2>
         <ul>
-          {cartItems.map((item, index) => (
-            <li key={item.id} className="flex justify-between p-2 bg-gray-200 rounded-md mb-2">
-              <span>{item.nama_makanan} x {item.quantity}</span>
-              <span>Rp.{(item.price * item.quantity).toLocaleString()}</span>
-              <button onClick={() => handleDelete(item.id)} className="text-red-500">🗑️</button>
-            </li>
+          {cartItems.map((item) => (
+            <CartItem key={item.id} item={item} onDelete={() => handleDelete(item.id)} />
           ))}
         </ul>
       </div>
