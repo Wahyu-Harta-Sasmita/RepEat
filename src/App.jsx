@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './Components/Tusan/Register';
 import Dashboard from './Pages/Store ~ Wahyu/Dashboard';
 import Products from './Pages/Store ~ Wahyu/products';
-import AddForm from './Pages/Store ~ Wahyu/addForm';
+import AddForm from './Pages/Store ~ Wahyu/AddForm';
 import EditForm from './Pages/Store ~ Wahyu/EditForm';
-import DonationPage from './Pages/General/Bagus/DonationPage'
+import Sidebar from './Pages/General/Bagus/Sidebar';
 
 const App = () => {
   return (
@@ -13,14 +12,13 @@ const App = () => {
       <Routes>
         <Route path="/" element={
           <>
-          <Register />
-          <DonationPage/>
+          <Sidebar />
           </>
           } />
         <Route path="/seller/dashboard" element={<Dashboard />} />
         <Route path="/seller/products" element={<Products />} />
         <Route path="/seller/addForm" element={<AddForm />} />
-        <Route path="/seller/editForm/:foodId" element={<EditForm />} />
+        <Route path="/seller/editForm" element={<EditForm />} />
       </Routes>
     </Router>
   );

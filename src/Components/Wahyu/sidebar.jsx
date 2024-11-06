@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Logo from '../../assets/images/Logo_Text_Small.png';
 
 const Sidebar = () => {
   const location = useLocation();
 
   return (
     <div className="w-64 bg-white p-4">
-      <h2 className="text-green-500 font-bold text-2xl">RepEat</h2>
+      <Link to='/'><img src={Logo} alt="logo" className='w-30 h-10' /></Link>
       <ul className="mt-6 space-y-4">
         <li>
           <Link 

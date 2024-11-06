@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
   return (
@@ -30,7 +31,7 @@ function Sidebar() {
 
         <div className="border-t pt-4 space-y-2">
           <button className="w-full text-left text-sm font-semibold text-gray-700 py-2 hover:bg-gray-100 rounded">Start Selling</button>
-          <button className="w-full text-left text-sm font-semibold text-gray-700 py-2 hover:bg-gray-100 rounded">My Store</button>
+          <Link to='/seller/dashboard'><button className="w-full text-left text-sm font-semibold text-gray-700 py-2 hover:bg-gray-100 rounded">My Store</button></Link>
         </div>
 
         <div className="border-t pt-4">

@@ -28,13 +28,14 @@ const ProdTables = () => {
         <div className="bg-white p-4 rounded-lg shadow-md">
             <div className='flex justify-between items-center'>
                 <h3 className="text-gray-500 mb-4">Produk Kamu</h3>
-                <button className="text-green-500 mr-2">
+                <button className="bg-green-500 text-white mr-2 p-2 rounded">
                     <Link to="/seller/addForm">+ Produk</Link>
                 </button>
             </div>
             <table className="w-full text-left">
                 <thead>
                     <tr>
+                        <th className='pb-2'>Image</th>
                         <th className="pb-2">Produk</th>
                         <th>SKU</th>
                         <th>Kategori</th>
@@ -47,6 +48,7 @@ const ProdTables = () => {
                 <tbody>
                     {products.map((product, index) => (
                         <tr key={index} className="border-t">
+                            <td><img src={product.foto_makanan} alt="Product Image" className="w-10 h-10 rounded-full" /></td>
                             <td className="py-2">{product.nama_makanan}</td>
                             <td>{product.sku}</td>
                             <td>{product.category}</td>

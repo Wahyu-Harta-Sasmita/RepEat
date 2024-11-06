@@ -9,7 +9,7 @@ const AddForm = () => {
     price: '',
     sku: '',
     stok: '',
-    category: '',
+    category: 'Baru', // Default value for the dropdown
     desc: '',
     foto_makanan: null,
   });
@@ -100,13 +100,15 @@ const AddForm = () => {
         </div>
         <div>
           <label className="block text-gray-700">Category</label>
-          <input
-            type="text"
+          <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             className="w-full border-b border-gray-300 focus:border-black outline-none p-1"
-          />
+          >
+            <option value="Baru">Baru</option>
+            <option value="Sisa">Sisa</option>
+          </select>
         </div>
         <div>
           <label className="block text-gray-700">Description</label>
