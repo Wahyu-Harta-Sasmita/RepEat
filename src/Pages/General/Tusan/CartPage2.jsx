@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Modal from '../../../Components/Tusan/Modal';
 import CartPage2Content from '../../../Components/Tusan/CartPage2Content';
@@ -17,7 +17,8 @@ const CartPage2 = ({ product, isModalOpen, setIsModalOpen }) => {
     e.preventDefault();
     console.log('Adding Product:', product);
 
-    const data = {
+    const newItem = {
+      id: product.id,
       nama_makanan: product.nama_makanan,
       price: product.price,
       sku: product.sku,
@@ -27,7 +28,25 @@ const CartPage2 = ({ product, isModalOpen, setIsModalOpen }) => {
       quantity: quantity,
       foto_makanan: product.foto_makanan,
     };
-    console.log('Product to be added to cart:', data);
+    console.log('Product to be added to cart:', newItem);
+
+    // Get existing cart items from localStorage
+    const existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    // Check if the product is already in the cart
+    const existingItemIndex = existingCartItems.findIndex((item) => item.id === newItem.id);
+    if (existingItemIndex > -1) {
+      // If already in cart, update the quantity
+      existingCartItems[existingItemIndex].quantity += quantity;
+    } else {
+      // Otherwise, add the new item
+      existingCartItems.push(newItem);
+    }
+
+    // Save updated cart items back to localStorage
+    localStorage.setItem("cartItems", JSON.stringify(existingCartItems));
+
+    // Close modal and navigate to cart page
     setIsModalOpen(false);
     navigate(`/cartpage/${id}`);
   };

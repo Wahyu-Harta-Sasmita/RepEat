@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFoods } from "../../../Components/Controller/getFoods";
 import Header from "../../../Components/Tusan/Header";
-import ProductDetails2 from "../../../Components/Tusan/ProductDetails2";
-import CartItem from "../../../Components/Tusan/CartItem";
 import CartFooter from "../../../Components/Tusan/CartFooter";
+import CartItem from "../../../Components/Tusan/CartItem";
 
 const CartPageBesar = () => {
   const { id } = useParams();
@@ -16,7 +15,6 @@ const CartPageBesar = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cartItems, setCartItems] = useState(() => {
-    // Load cartItems from localStorage if it exists
     return JSON.parse(localStorage.getItem("cartItems")) || [];
   });
 
@@ -26,7 +24,6 @@ const CartPageBesar = () => {
   }, []);
 
   useEffect(() => {
-    // Update localStorage whenever cartItems changes
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -54,13 +51,6 @@ const CartPageBesar = () => {
       }
     });
   };
-
-  const incrementQuantity = () => setQuantity((prev) => prev + 1);
-  const decrementQuantity = () => {
-    if (quantity > 1) setQuantity((prev) => prev - 1);
-  };
-
-  const handleCheck = () => setChecked((prev) => !prev);
 
   const handleDelete = (idToDelete) => {
     const itemToDelete = cartItems.find((item) => item.id === idToDelete);
@@ -106,20 +96,22 @@ const CartPageBesar = () => {
       <Header />
 
       <div className="p-4">
-        {loading ? (
-          <div>Loading product...</div>
-        ) : error ? (
-          <div className="text-red-500">{error}</div>
-        ) : (
-          <ProductDetails2
-            product={product}
-            quantity={quantity}
-            increment={incrementQuantity}
-            decrement={decrementQuantity}
-            checked={checked}
-            onCheck={handleCheck}
-          />
-        )}
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold">Items in Cart:</h2>
+          {cartItems.length === 0 ? (
+            <p>No items in cart</p>
+          ) : (
+            <ul>
+              {cartItems.map((item) => (
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  handleDelete={handleDelete}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       <CartFooter
@@ -128,14 +120,6 @@ const CartPageBesar = () => {
         onAddToCart={handleAddToCart}
         onSave={() => navigate('/shop')}
       />
-
-      <div className="p-4">
-        <ul>
-          {cartItems.map((item) => (
-            <CartItem key={item.id} item={item} onDelete={() => handleDelete(item.id)} />
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };
