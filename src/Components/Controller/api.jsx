@@ -28,6 +28,7 @@ export const addFoods = (data) => {
     });
 };
 
+
 export const deleteFood = (id, callback) => {
   axios
     .delete(`${API_URL}/${id}`)

@@ -2,8 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './Pages/Store ~ Wahyu/Dashboard';
 import Products from './Pages/Store ~ Wahyu/products';
-import AddForm from './Pages/Store ~ Wahyu/AddForm';
-import EditForm from './Pages/Store ~ Wahyu/EditForm';
 import Sidebar from './Pages/General/Bagus/Sidebar';
 import FullProduct from './Pages/General/Tusan/FullProduct';
 import CartPage2 from './Pages/General/Tusan/CartPage2';
@@ -27,8 +25,6 @@ const App = () => {
         <Route path='/cartpage/:id' element={<CartPageBesar />} />
         <Route path="/seller/dashboard" element={<Dashboard />} />
         <Route path="/seller/products" element={<Products />} />
-        <Route path="/seller/addForm" element={<AddForm />} />
-        <Route path="/seller/editForm" element={<EditForm />} />
       </Routes>
     </Router>
   );

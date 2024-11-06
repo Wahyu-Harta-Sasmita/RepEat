@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { addFoods } from '../../Components/Controller/api';
+import { addFoods } from '../Controller/api';
 import { useNavigate } from 'react-router-dom';
 
 const AddForm = () => {
@@ -9,7 +9,7 @@ const AddForm = () => {
     price: '',
     sku: '',
     stok: '',
-    category: '',
+    category: 'Baru', // Default value for the dropdown
     desc: '',
     foto_makanan: null,
   });
@@ -46,14 +46,14 @@ const AddForm = () => {
 
     try {
       await addFoods(data); 
-      navigate('/seller/products');
+      navigate('/seller/products'); 
     } catch (error) {
       console.error('Error adding product:', error);
     }
   };
 
   return (
-    <div className="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <div className="w-[300px] h-[500px] mx-auto bg-white p-6 rounded-lg shadow-lg overflow-y-auto overflow-x-hidden">
       <h2 className="text-center text-2xl font-bold text-white bg-green-500 py-2 mb-4 rounded">
         Add New Product
       </h2>
@@ -100,13 +100,15 @@ const AddForm = () => {
         </div>
         <div>
           <label className="block text-gray-700">Category</label>
-          <input
-            type="text"
+          <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             className="w-full border-b border-gray-300 focus:border-black outline-none p-1"
-          />
+          >
+            <option value="Baru">Baru</option>
+            <option value="Sisa">Sisa</option>
+          </select>
         </div>
         <div>
           <label className="block text-gray-700">Description</label>
